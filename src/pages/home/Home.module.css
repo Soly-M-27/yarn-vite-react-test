@@ -1,0 +1,38 @@
+.profile {
+  text-align: center;
+}
+
+.profilePicture {
+  border-radius: 50%;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.fill-form {
+  max-width: 360px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.fill .error {
+  color: red;
+  font-weight: bold;
+}
+
+.fill-form label {
+  display: block;
+  margin: 30px auto;
+}
+
+.fill-form span {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.fill-form input {
+  padding: 8px 6px;
+  font-size: 1em;
+  color: #777;
+  width: 100%;
+}

@@ -1,0 +1,31 @@
+/* navbar styles */
+.navbar {
+    width: 100%;
+    background: #ddfde6;
+    padding: 20px 10px;
+    box-sizing: border-box;
+}
+
+.navbar ul { /*Goes inside the Navbar for different links with display flex so the li tags sit next to each other*/
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title { /* This will also go in the Navbar */
+    margin-right: auto; /* Sits on the very (absolute) left and everything else sits on the right*/
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 1.2em;
+}
+
+.navbar button,
+.navbar a { /* button and anchor tag */
+    margin-left: 16px; /* Placed 16px of the left of the bar */
+}
+
+.navbar a {
+    color: #333;
+    text-decoration: none;
+}
