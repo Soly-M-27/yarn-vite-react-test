@@ -4,12 +4,12 @@
         "install": {
             "title": "Install",
             "description": "Run install",
-            "command": "yarn i"
+            "command": "npm i"
         },
         "build": {
             "title": "Build Project",
             "description": "Builds the project for use",
-            "command": "yarn run build"
+            "command": "npm run build"
         },
         "install & build": {
             "title": "Initialize Codux",
