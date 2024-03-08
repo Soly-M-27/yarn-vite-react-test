@@ -24,3 +24,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# ...
+codux.config.json
+firebase.json
+firestore.indexes.json
+firestore.rules
+package.json
+vite.config.js
+storage.rules
