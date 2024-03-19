@@ -1,82 +1,29 @@
-:global(.profile) {
-  text-align: center;
-}
-
 .bgColor {
   background-color: #ddfde6;
 }
 
-.profilePicture {
-      width: 70px;
-      height: 70px;
-      border: 3px solid #e6ff40;
-      border-radius: 50%;
-      object-fit: cover;
+.temple-icon {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  bottom: 115px;
 }
 
-.ant-list-item {
-    width: 300px;
-    min-width: 300px;
-    background: #ddfde6;
-    min-height: 100vh;
-    box-sizing: border-box;
-    position: relative;
-    color: #fff;
+.space-align-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
-
-:global(.ant-list-item-content) {
-    position: fixed;
-    width: inherit;
+.space-align-block {
+  flex: none;
+  margin: 8px 4px;
+  padding: 4px;
+  border: 1px solid #40a9ff;
 }
-
-.ant-list-item .links {
-    margin-top: 80px;
-    margin-left: 20px;
-}
-
-.ant-list-item .links li {
-    margin-top: 10px;
-}
-
-.ant-list-item .links a {
-    display: flex;
-    padding: 10px;
-    text-decoration: none;
-    width: 100%;
-    color: #fff;
-    box-sizing: border-box;
-}
-
-.ant-list-item .links img {
-    margin-right: 10px;
-    filter: invert(100%);
-}
-
-.ant-list-item .links a.active {
-    color: #555;
-    background: var(--bg-color);
-    border-radius: 20px 0 0 20px;
-}
-
-.ant-list-item .links .active img {
-    filter: invert(40%);
-}
-
-.ant-list-item .profile {
-    font-weight: bold;
-    text-align: center;
-    letter-spacing: 1px;
-    padding: 40px 30px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-
-/* avatar in sidebar */ 
-.ant-list-item .profile .profilePicture {
-    margin-bottom: 10px;
-    width: 70px;
-    height: 70px;
-    border: 3px solid #fff;
+.space-align-block .mock-block {
+  display: inline-block;
+  padding: 32px 8px 16px;
+  background: rgba(150, 150, 150, 0.2);
 }
 
 /* CSS */
@@ -95,13 +42,13 @@
   font-family: "Google Sans",Roboto,Arial,sans-serif;
   font-size: 14px;
   font-weight: 500;
-  height: 48px;
+  height: 35px;
   justify-content: center;
   letter-spacing: .25px;
   line-height: normal;
   max-width: 100%;
   overflow: visible;
- padding: 2px 24px;
+  padding: 2px 24px;
   position: relative;
   text-align: center;
   text-transform: none;

@@ -1,6 +1,7 @@
 import { useReducer, useState, useEffect } from 'react';
 import { db, timestamp } from "../firebase/config";
-import { collection } from 'firebase/firestore';
+import { collection, doc, deleteDoc } from 'firebase/firestore';
+//import { useAuthContext } from './useAuthContext';
 
 let initialState = {
     document: null,
@@ -27,10 +28,14 @@ const firestoreReducer = (state, action) => {
 }
 
 export const useFirestore = (c) => {
+
+//    const { user } = useAuthContext();
+    
     const [response, dispatch] = useReducer(firestoreReducer, initialState)
     const [isCancelled, setIsCancelled] = useState(false)
 
     console.log("response from useFirestore.js: ", response);
+    console.log("collection (c) in useFirestore.js: ", c);
 
     // collection ref
     const ref = collection(db, c);
@@ -61,17 +66,23 @@ export const useFirestore = (c) => {
 
 
     const deleteDocument = async (id) => {
-        dispatch({ type: 'IS_PENDING' });
+      dispatch({ type: "IS_PENDING" });
+      
+      try {
+        const doc_ref = doc(db, "profile_info", id);
+        await deleteDoc(doc_ref);
+        console.log("Document deleted successfully!");
 
-        try {
-            await ref.doc(id).delete();
-            dispatchIfNotCancelled({ type: 'DELETED_DOCUMENT' });
+        dispatchIfNotCancelled({ type: "DELETED_DOCUMENT" });
 
-        } catch (err) {
-            console.log("Caught error in deleting document: ", err)
-           dispatchIfNotCancelled({ type: 'ERROR', payload: 'could noy delete doc'}); 
-        }
-    }
+      } catch (err) {
+        console.log("Caught error in deleting document: ", err);
+        dispatchIfNotCancelled({
+          type: "ERROR",
+          payload: "could noy delete doc",
+        });
+      }
+    };
 
     // update documents
     const updateDocument = async (id, updates) => {

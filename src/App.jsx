@@ -25,32 +25,53 @@ function App() {
   return (
     <div className="App">
       {authIsReady && (
-        <Row gutter={0} justify="center" align="middle">
-          <Col span={24}>
+        <Row
+          gutter={0}
+          justify="center"
+          align="middle"
+          style={{
+            backgroundColor: "#e31515",
+            border: "9px solid #ccc",
+            borderRadius: "5px",
+            boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <Col
+            span={24}
+            xs={24}
+            sm={24}
+            md={24}
+            style={{
+              backgroundColor: "#ddff00",
+              border: "13px solid #ccc",
+              borderRadius: "5px",
+              boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+            }}
+          >
             <Router>
               <Navbar />
-              {user && <Sidebar />}
+              {user && (
+                <Sidebar
+                  style={{
+                    backgroundColor: "#f0f0f0",
+                    border: "3px solid #ccc",
+                    borderRadius: "5px",
+                    boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
+              )}
               <Routes>
-                <Route
-                  path="/"
-                  element={<Dashboard />}
-                />
-                <Route
-                  path="/login"
-                  element={user ? <Navigate to="/" /> : <Login />}
-                />
-                <Route
-                  path="/signup"
-                  element={user ? <Navigate to="/" /> : <Signup />}
-                />
-                <Route
-                  path="/form" element={user ? <Home /> : <Navigate to="/login" />}
-                />
+                <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
+                <Route path="/signup" element={<Signup />} />
+                {user && <Route path="/" element={<Dashboard />} />}
+                {user && <Route path="/form" element={<Home />} />}
+                {/* Show Home component only if user is authenticated */}
+                {!user && <Route path="*" element={<Navigate to="/login" />} />}
+                {/* Redirect to login if user us n ot authenticated */}
               </Routes>
             </Router>
           </Col>
         </Row>
-
       )}
     </div>
   );

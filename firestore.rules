@@ -7,15 +7,16 @@ service cloud.firestore {
 
     }
 
-    match /users/{userID} {
+    match /users/{userId} {
       // only authorized users can create
       allow create: if request.auth != null;
-
+      allow read, write, update: if request.auth != null && request.auth.uid == userId;
     }
 
-    match /profile_info/{userID} {
+    match /profile_info/{document=**} {
       allow create: if request.auth != null;
-      allow read, write, delete: if request.auth != null && request.auth.uid == userID;
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.uid;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.uid;
     }
   }
 }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Tree, Input } from 'antd';
-import { useProfileInfo } from '../../hooks/useProfileInfo';
 
 const { TextArea } = Input;
 
@@ -19,16 +18,15 @@ const treeData = [
     },
 ];
 
-export default function SocialMediaTree() {
-    
-    const { socialMediaLinks } = useProfileInfo();
-    
+export default function SocialMediaTree({ onLinkInputsChange }) { 
+     
     const [expandedKeys, setExpandedKeys] = useState(['Social Media']);
     const [checkedKeys, setCheckedKeys] = useState([]);
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [autoExpandedParent, setAutoExpandedParent] = useState(true);
     const [linkInputs, setLinkInputs] = useState({});
     const [selectorError, setSelectorError] = useState(null);
+    const [formError, setformError ] = useState(null);
 
     const onExpand = (expandedKeysValue) => {
         if (!expandedKeysValue) {
@@ -87,10 +85,16 @@ export default function SocialMediaTree() {
         const { value } = e.target;
         
         setLinkInputs((prevState) => ({ ...prevState, [key]: value }));
+        onLinkInputsChange((prevState) => ({ ...prevState, [key]: value }));
         console.log("Social media links ready to be checked and sourced...");
         console.log("value: ", value);
         console.log("Links: ", linkInputs);
-        socialMediaLinks(linkInputs);
+        
+        console.log("Checking links if empty: ");
+        if (!linkInputs) {
+            setformError("Please enter your social media link sources in SocialMediaTree.jsx.");
+            return;
+        }
     }
 
     return (
@@ -122,7 +126,8 @@ export default function SocialMediaTree() {
                     ))}
                 </div>
             )}
-            {selectorError && <p className='error'>{selectorError}</p>}
+            {selectorError && <p className='error'>selectError: {selectorError}</p>}
+            {formError && <p className='error'>formError: {formError}</p>}
         </div>
     );
 }

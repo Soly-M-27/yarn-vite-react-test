@@ -24,18 +24,16 @@ export default function Home() {
     const [PhoneNum, setPhoneNum] = useState('');
     const [refreshed, setRefreshed] = useState(false);
     const [formError, setformError] = useState(null);
-    const [newProject, setNewProject] = useState(null);
+    const [linkChange, setLinkChange] = useState({});
 
-    //const { addDocument, response } = useFirestore('profile_info');
     const { response } = useFirestore('profile_info');
     const { authIsReady, user } = useAuthContext();
     const { profileInfo, error } = useProfileInfo();
-    const { linkInputs } = SocialMediaTree(); 
+    //const { addDocument, response } = useFirestore('profile_info');
     //const { errorC } = useCollection();
         /*'profile_info',
         ["uid", "==", user.uid],
         ["createdAt", "desc"]*/
-
 
     const handleRefresh = () => {
         setRefreshed(true);
@@ -67,8 +65,8 @@ export default function Home() {
             return;
         }
 
-        if (!linkInputs) {
-            setformError("Please enter your social media link sources.");
+        if (!linkChange) {
+            setformError("Please linkChange on Home for social_media_links");
             return;
         }
 
@@ -81,22 +79,22 @@ export default function Home() {
 
         // object that contains business card form info
         const project = {
-            Name,
-            WorkEmail,
-            Location,
-            NameProfession,
-            NameBusiness,
-            PhoneNum,
-            linkInputs,
-            LinktreeLink,
-            createdBy
+            legal_name: Name,
+            work_email: WorkEmail,
+            location: Location,
+            name_of_profession: NameProfession,
+            name_business: NameBusiness,
+            phone_num: PhoneNum,
+            social_media_link: linkChange,
+            link_tree_link: LinktreeLink,
+            created_by: createdBy
         }
 
-        console.log(Name, WorkEmail, Location, NameProfession, NameBusiness, PhoneNum, LinktreeLink);
+        console.log(Name, WorkEmail, Location, NameProfession, NameBusiness, PhoneNum, linkChange, LinktreeLink, createdBy);
         console.log("project object: ", project);
 
-        setNewProject(project);
-        profileInfo(newProject);
+        //setNewProject(project);
+        profileInfo(project);
         //await addDocument(project);
 
         if (!response.error) {
@@ -196,7 +194,7 @@ export default function Home() {
                                 />
                             </label>
                             <label>
-                                <SocialMediaTree />
+                                <SocialMediaTree onLinkInputsChange={setLinkChange} />
                             </label>
                             <label>
                                 <h3>Linktree is suggested in case {user.displayName} has more than 4 social media links to share</h3>
@@ -209,8 +207,8 @@ export default function Home() {
                             </label>
                             <div>
                                 <button className='btn'>Begin AR Business Card</button>
-                                {error && <div className="error">{error}</div>}
-                                {formError && <div className="error">{formError}</div>}
+                                {error && <div className="error">error: {error}</div>}
+                                {formError && <div className="error"> formError: {formError}</div>}
                             </div>
                         </form>
                     </Col>
