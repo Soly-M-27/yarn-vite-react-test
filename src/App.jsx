@@ -1,4 +1,4 @@
-// App.js
+// App.jsx
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 //import AR_Cards from './pages/AR_Cards/AR_Cards';
 import Login from './pages/login/Login';
 import Home from './pages/home/Home';
+import EditUpdatePage from './pages/home/EditUpdatePage';
 import Signup from './pages/signup/Signup';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 {user && <Route path="/" element={<Dashboard />} />}
                 {user && <Route path="/form" element={<Home />} />}
+                {user && <Route path="/edit/:id" element={<EditUpdatePage />} />}
                 {/* Show Home component only if user is authenticated */}
                 {!user && <Route path="*" element={<Navigate to="/login" />} />}
                 {/* Redirect to login if user us n ot authenticated */}

@@ -16,7 +16,7 @@ service cloud.firestore {
     match /profile_info/{document=**} {
       allow create: if request.auth != null;
       allow read, write: if request.auth != null && request.auth.uid == resource.data.uid;
-      allow delete: if request.auth != null && request.auth.uid == resource.data.uid;
+      allow delete, update: if request.auth != null && request.auth.uid == resource.data.uid;
     }
   }
 }

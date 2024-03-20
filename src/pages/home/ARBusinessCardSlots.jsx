@@ -5,10 +5,12 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { Avatar, Card, Skeleton } from 'antd';
 import Sidebar from '../../components/Sidebar'
+import { useNavigate } from 'react-router-dom';
 
 const { Meta } = Card;
 
 export default function BusinessCardSlot ({ BusinessCard }) {
+  const navigate = useNavigate();
   const { deleteDocument, response } = useFirestore('profile_info');
   console.log("response from AR_BusinessCardSlots.js: ", response);
   const { user, authIsReady } = useAuthContext();
@@ -22,6 +24,10 @@ export default function BusinessCardSlot ({ BusinessCard }) {
     console.log("Documents NOT passed to BusinessCard: ", BusinessCard);
   } else {
     console.log("Documents passed to BusinessCard: ", BusinessCard);
+  }
+
+  const handleEditClick = (id) => {
+    navigate(`/edit/${id}`);
   }
 
   const handleClick = async (id) => {
@@ -88,7 +94,7 @@ export default function BusinessCardSlot ({ BusinessCard }) {
               {BusinessCard.map((card) => (
                 <Card
                   style={{ width: "300px", marginTop: "16px" }}
-                  actions={[<EditOutlined key="edit" />]}
+                  actions={[<EditOutlined key="edit" onClick={() => handleEditClick(card.id)} />]}
                 >
                   <Skeleton loading={loading} avatar active>
                     <Meta
