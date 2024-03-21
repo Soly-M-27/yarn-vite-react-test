@@ -1,4 +1,5 @@
-import styles from './Home.module.css';
+// Home.jsx 
+
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useProfileInfo } from '../../hooks/useProfileInfo';
 import { useFirestore } from '../../hooks/useFirestore';
@@ -6,39 +7,68 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import { Row, Col, Button, Result, Input, Upload, Form } from 'antd';
 import { SmileOutlined, PlusOutlined } from '@ant-design/icons';
-//import { EditUpdatePage } from './EditUpdatePage';
 import SocialMediaTree from './SocialMediaTree';
+
+//styles
+import styles from './Home.module.css';
+
+/**
+ * Home - It's actually the Build area, the form that fills
+ * the AR-Card's personal info
+ * 
+ * @returns : jsx form element
+ */
 
 export default function Home() {
     console.log("I'm Home. In Profile.")
 
     const navigate = useNavigate();
 
+    //strings
     const [Name, setName] = useState('');
     const [LinktreeLink, setLinktree] = useState('');
     const [WorkEmail, setWorkEmail] = useState('');
     const [Location, setLocation] = useState('');
     const [NameProfession, setNameProfession] = useState('');
     const [NameBusiness, setNameBusiness] = useState('');
-    const [PhoneNum, setPhoneNum] = useState('');
-    const [refreshed, setRefreshed] = useState(false);
-    const [formError, setformError] = useState(null);
     const [linkChange, setLinkChange] = useState({});
-    const [ mindFile, setMindFile ] = useState(null);
-    const [ mindFileError, setMindFileError ] = useState(null);
 
+    //string of nums
+    const [PhoneNum, setPhoneNum] = useState('');
+
+    //bools
+    const [refreshed, setRefreshed] = useState(false);
+   
+    //picture files
+    const [mindFile, setMindFile] = useState(null);
+
+    //form errors
+    const [formError, setformError] = useState(null);
+    const [mindFileError, setMindFileError] = useState(null);
+
+    //component states & function holders
     const { response } = useFirestore('profile_info');
     const { authIsReady, user } = useAuthContext();
     const { profileInfo, MindFile, error } = useProfileInfo();
 
+    /**
+     * handleRefresh - Refreshes the page
+     */
     const handleRefresh = () => {
         setRefreshed(true);
         window.location.reload();
     }
 
+    /**
+     * handleSubmit - Function that triggers form submition
+     *  
+     * @param {*} e - event obj of type ANY
+     * @returns : Takes new profile_info document
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Handle Profile Info");
+        console.log("e type: ", typeof e);
         setformError(null);
 
         if (!Name) {
@@ -99,6 +129,13 @@ export default function Home() {
         console.log("New Info!");
     }
 
+    /**
+     * handleFileChange - Function that stores 
+     * Mind Image Target in /mind at Firebase Storage services
+     * 
+     * @param {*} e - event obj of type ANY
+     * @returns : Image Target to then be converted to .mind file
+     */
     const handleFileChange = (e) => {
         setMindFile(null);
         let selected = e.target.files[0];
@@ -131,10 +168,12 @@ export default function Home() {
     console.log("User pic: ", user.photoURL);
     console.log("User displayName: ", user.displayName);
 
+    //Check user authorization
     if (!authIsReady) {
         return <div>Loading...</div>;
     }
 
+    //Check for existence of user profile picture
     if (!user.photoURL) {
         return (
             <Row gutter={0} justify="center" align="middle" className={styles['fill-form']}>
@@ -149,10 +188,12 @@ export default function Home() {
         )
     }
 
+    //Refresh page
     if (refreshed) {
         return <Link to="/home"/>;
     } 
 
+    // Build Form JSX elemets
     return (
       <>
         {user && authIsReady && user.photoURL && (
