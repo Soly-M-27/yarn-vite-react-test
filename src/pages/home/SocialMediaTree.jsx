@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Tree, Input } from 'antd';
 
+//antd: https://ant.design/components/tree
+
 const { TextArea } = Input;
 
 const treeData = [
@@ -18,6 +20,13 @@ const treeData = [
     },
 ];
 
+/**
+ * SocialMediaTree - Drop down selectors that then display text areas to
+ * write in users social media links
+ * 
+ * @param {*} param0 - passing state from Home.jsx to setLinkChange
+ * @returns : Tree selector to enter max 4 social media links
+ */
 export default function SocialMediaTree({ onLinkInputsChange }) { 
      
     const [expandedKeys, setExpandedKeys] = useState(['Social Media']);
@@ -26,16 +35,16 @@ export default function SocialMediaTree({ onLinkInputsChange }) {
     const [autoExpandedParent, setAutoExpandedParent] = useState(true);
     const [linkInputs, setLinkInputs] = useState({});
     const [selectorError, setSelectorError] = useState(null);
-    const [formError, setformError ] = useState(null);
+    const [formError, setformError] = useState(null);
 
     const onExpand = (expandedKeysValue) => {
-        if (!expandedKeysValue) {
-            console.log("No expandedKeysValue found: ", expandedKeysValue);
-            setSelectorError("No expandedKeysValue found");
-        }
-        console.log('onExpand: ', expandedKeysValue);
-        setExpandedKeys(expandedKeysValue);
-        setAutoExpandedParent(false);
+      if (!expandedKeysValue) {
+        console.log("No expandedKeysValue found: ", expandedKeysValue);
+        setSelectorError("No expandedKeysValue found");
+      }
+      console.log("onExpand: ", expandedKeysValue);
+      setExpandedKeys(expandedKeysValue);
+      setAutoExpandedParent(false);
     };
 
     const onCheck = (checkedKeysValue) => {

@@ -5,11 +5,23 @@ import { updateProfile } from 'firebase/auth';
 import { useAuthContext } from './useAuthContext';
 import { collection, addDoc, updateDoc } from "firebase/firestore";
 
+/**
+ * useProfileInfo - Handles submitted user info and takes 
+ * it to the according Firebase service
+ * 
+ * @returns : error, profileInfo, MindFile, UpdateProfileInfo 
+ */
 export const useProfileInfo = () => {
 
     const [error, setError] = useState(null);
     const { user } = useAuthContext();
 
+    /**
+     * MindFile - function to take in Image Target for Business Card
+     * 
+     * @param {*} mindFile - image to be converted later into .mind file
+     * Currently stored in Firebase Storage /mind directory
+     */
     const MindFile = async (mindFile) => {
       try {
         if (user) {
@@ -38,7 +50,12 @@ export const useProfileInfo = () => {
       }
     };
 
-
+    /**
+     * profileInfo - Takes obj called project from Home.jsx and creates
+     * the fields that exists
+     * 
+     * @param {*} project - obj containing business card info
+     */
     const profileInfo = async (project) => {
       console.log("Profile Info function begins in useProfileInfo.js");
       setError(null);
@@ -86,6 +103,12 @@ export const useProfileInfo = () => {
     };
 
 
+    /**
+     * FUNCTION NOT OPTIMIZED YET FOR USE
+     * CHECK: https://firebase.google.com/docs/firestore/manage-data/add-data#web-modular-api_8
+     * 
+     * @param {*} project_updated - obj containing updated states from EditUpdatePage.jsx
+     */
     const UpdateProfileInfo = async (project_updated) => {
       console.log("UpdateProfileInfo function updates in useProfileInfo.js");
       setError(null);
@@ -100,7 +123,7 @@ export const useProfileInfo = () => {
 
         try {
           console.log("trying to update new items within profile_info docID");
-          await addDoc(collection(db, "profile_info"), {
+          await addDoc(collection(db, "profile_info"), { //This should be updateDoc instead. Later we will deal with it
             Name: project.legal_name,
             WorkEmail: project.work_email,
             Location: project.location,

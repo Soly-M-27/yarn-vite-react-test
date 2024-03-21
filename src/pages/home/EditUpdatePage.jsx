@@ -1,19 +1,45 @@
 //EditUpdatePage.jsx
 
-import styles from './Home.module.css';
 import { useAuthContext } from '../../hooks/useAuthContext';
-//import { useFirestore } from '../../hooks/useFirestore';
+//import { useFirestore } from '../../hooks/useFirestore';`;
 import { useState } from 'react';
 import { Row, Col, Button, Input, Upload, Form } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useProfileInfo } from '../../hooks/useProfileInfo';
 import { useNavigate } from 'react-router-dom';
+import { useCollection } from '../../hooks/useCollection';
 //import SocialMediaTree from './SocialMediaTree';
 
+//styles
+import styles from './Home.module.css';
+
+/**
+ * EditUpdatepPage - Update already existing document and its fields
+ * 
+ * @returns : JSX elements
+ */
 export default function EditUpdatePage() {
   console.log("I'm in EditUpdatePage.");
+  
+  //component states & function holders
+  const { authIsReady, user } = useAuthContext();
+  const { MindFile, UpdateProfileInfo } = useProfileInfo();
+  const navigate = useNavigate();
+  const { documents, errorC } = useCollection(
+    "profile_info",
+    user ? ["uid", "==", user.uid] : [], // An array being passed as a function parameter. We're saying only fetch the books where the uid property of the book is equal to the uid of the user
+    ["createdAt", "desc"],
+    user.uid //Pass the user's UID directly
+  );
 
+  //tests
+  const [mindFileUpdate, setMind_File] = useState(null);
+ 
   //strings
+  
+  //Will uncomment after figuring out how new state values with be updated in:
+  //https://firebase.google.com/docs/firestore/manage-data/add-data#web-modular-api_8
+
   /*const [NameUpdate, setName] = useState("");
   const [LinktreeUpdate, setLinktree] = useState("");
   const [EmailUpdate, setWorkEmail] = useState("");
@@ -32,19 +58,7 @@ export default function EditUpdatePage() {
   //form errors
   const [formError, setformError] = useState(null);
 
-  //component states & function holders
-  //const { response } = useFirestore('profile_info');*/
-  const { authIsReady, user } = useAuthContext();
-  const { MindFile, UpdateProfileInfo } = useProfileInfo();
-  const navigate = useNavigate();
-
-  //tests
-  const [mindFileUpdate, setMind_File] = useState(null);
-
-  //Check user authorization
-  if (!authIsReady) {
-    return <div>Loading...</div>;
-  }
+  */
 
   /**
    * handleSubmit - Function to trigger form submition on update
@@ -122,6 +136,15 @@ export default function EditUpdatePage() {
     navigate("/");
   };
 
+  /**
+   * handleFileChange - function that handles mindFile Image
+   * (this function takes the selected onChange file to the MindFile
+   * function in useProfileInfo.jsx. MindFile function will have to be
+   * re-written later to add the .mind compiler like we did before)
+   * 
+   * @param {*} e - event obj of type ANY (it should be an image file)
+   * @returns : mindImage to Firebase Storage via MindFile
+   */
   const handleFileChange = (e) => {
     console.log("Event object:", e);
     console.log("File selected:", e.target.files);
@@ -154,9 +177,28 @@ export default function EditUpdatePage() {
     MindFile(selected);
   };
 
+  //Document checkers. DO NOT REMOVE THEM, OR DOCUMENTS WILL PASS EMPTY
+  //Check documents
+  if (!documents || documents.length === 0) {
+    console.log("Documents NOT passed to BusinessCard: ", documents);
+    console.log("errorC: ", errorC);
+  } else {
+    console.log("Documents passed to BusinessCard: ", documents);
+  }
+
+  //Check if documents is an array
+  if (!documents || !Array.isArray(documents)) {
+    return <p>No Business Card created yet!</p>;
+  }
+
+  //Check user authorization
+  if (!authIsReady) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
-      {user && authIsReady && user.photoURL && (
+      {user && authIsReady && user.photoURL && documents && (
         <Row
           gutter={0}
           justify="center"
@@ -171,7 +213,40 @@ export default function EditUpdatePage() {
                   src={user.photoURL}
                   alt="Pic"
                 />
-                <h2>{user.displayName}'s Profile</h2>
+                <h2>{user.displayName}'s Card Profile</h2>
+                {errorC && <p className='error'>{errorC}</p>}
+              </div>
+              <div>
+                {documents.length === 0 && (
+                  <p>No Business Card created yet in EditUpdatePage!</p>
+                )}
+                {documents && Array.isArray(documents) && documents.map((card) => (
+                  <div key={card.CreatedBy.id}>
+                    <h4>{card.Name}'s AR-Card</h4>
+                    <p> {card.NameOfProfession} </p>
+                    <p> Business Name: {card.NameBusiness} </p>
+                    <p> Location: {card.Location} </p>
+                    <p> e-mail: {card.WorkEmail} </p>
+                    <p>
+                      {" "}
+                      Linktree:{" "}
+                      <a href={card.Link_Tree_Link}> {card.Link_Tree_Link} </a>
+                    </p>
+                    <p> Phone Num: {card.PhoneNum} </p>
+                    {Object.keys(card.Social_Media_Links).map((key) => (
+                      <p key={key}>
+                        <li>
+                          link:{" "}
+                          <a href={card.Social_Media_Links[key]}>
+                            {" "}
+                            {card.Social_Media_Links[key]}{" "}
+                          </a>
+                        </li>
+                      </p>
+                    ))}
+                    <p> Card.id: {card.id} </p>
+                  </div>
+                ))}
               </div>
               <label>
                 <Upload listType="picture-card" action="/upload.do">

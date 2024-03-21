@@ -22,8 +22,6 @@ import styles from './Home.module.css';
 export default function Home() {
     console.log("I'm Home. In Profile.")
 
-    const navigate = useNavigate();
-
     //strings
     const [Name, setName] = useState('');
     const [LinktreeLink, setLinktree] = useState('');
@@ -50,6 +48,7 @@ export default function Home() {
     const { response } = useFirestore('profile_info');
     const { authIsReady, user } = useAuthContext();
     const { profileInfo, MindFile, error } = useProfileInfo();
+    const navigate = useNavigate();
 
     /**
      * handleRefresh - Refreshes the page

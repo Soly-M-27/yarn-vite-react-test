@@ -7,22 +7,27 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import ARBusinessCardSlots from '../home/ARBusinessCardSlots';
 import { Link, useNavigate } from 'react-router-dom';
 import { Row, Col } from 'antd';
+//import { useExistingDocuments } from './useExistingDocuments';
 //import AR_Cards from '../AR_Cards/AR_Cards';
 
 //styles
 import styles from './Dashboard.module.css';
 
+/**
+ * Dashboard - Displays created Business Cards from the build (Home.jsx)
+ * 
+ * @returns : Dashboard JSX elemnts where ARBusinessCardSlots.jsx will display
+ */
 export default function Dashboard() {
 
     const [refreshed, setRefreshed] = useState(false);
     const { user, authIsReady } = useAuthContext();
     const { documents, errorC } = useCollection(
       "profile_info",
-      user ? ["uid", "==", user.uid] : [], // An array being passed as a function parameter. We're saying only fetch the books where the uid property of the book is equal to the uid of the user
+      user ? ["uid", "==", user.uid] : [], // An array being passed as a function parameter. We're saying only fetch the docs where the uid property of the doc is equal to the uid of the user
       ["createdAt", "desc"],
       user.uid //Pass the user's UID directly
     );
-
     
     if (!documents) {
         console.log("No fucking documents")
@@ -47,7 +52,7 @@ export default function Dashboard() {
     if (!authIsReady) {
         return <div>Loading...</div>;
     }
-
+    
     if (user && !user.photoURL) {
         return (
             <Row gutter={0} justify="center" align="middle" className={styles['fill-form']}>
