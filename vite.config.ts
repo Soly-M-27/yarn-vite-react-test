@@ -9,9 +9,13 @@ export default defineConfig({
   // comment this out if that isn't relevant for your project
   // envPrefix: 'REACT_APP_',
 
+  server:{
+    port:3000
+  },
   build: {
     outDir: "build",
   },
+  css: {},
   plugins: [
     react(),
     envCompatible(),

@@ -2,7 +2,7 @@
 import styles from './Avatar.module.css';
 import { Col, Row } from 'antd';
 
-export default function Avatar({ src }) {
+export default function Avatar({ src }:any) {
   return (
     <Row gutter={0} justify="center" className={styles['avatar']}>
       <Col span={24} xs={24} sm={24} md={24}>

@@ -2,20 +2,21 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFirestore } from "../../hooks/useFirestore";
 import { useState } from "react";
 import { timestamp } from "../../firebase/config";
+import styles from './AR_CardComments.module.css';
 import { Col, Row } from 'antd';
 
-export default function AR_CardComments({ ar_cardToComment }) {
+export default function AR_CardComments({ ar_cardToComment }:any) {
 
     const { updateDocument, response } = useFirestore('profile_info');
     const [newComment, setNewComment] = useState('');
     const { user } = useAuthContext();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:any) => {
         e.preventDefault();
 
         const commentToAdd = {
-            displayName: user.displayName,
-            photoURL: user.photoURL,
+            displayName: user?.displayName,
+            photoURL: user?.photoURL,
             content: newComment,
             createdAt: timestamp.fromDate(new Date()),
             id: Math.random()
@@ -34,19 +35,19 @@ export default function AR_CardComments({ ar_cardToComment }) {
             <Row gutter={0} justify="center" className={styles.navbar}>
                 <Col span={24} xs={24} sm={24} md={24}>
                     <div className="project-comments">
-                        <h4>{user.displayName}'s comment section</h4>
+                        <h4>{user?.displayName}'s comment section</h4>
                         <ul>
-                            {ar_cardToComment.comments.length > 0 && ar_cardToComment.comments.map(comments => (
-                                <li key={comment.id}>
+                            {ar_cardToComment.comments.length > 0 && ar_cardToComment.comments.map((comments:any) => (
+                                <li key={comments.id}>
                                     <div className="comment-author">
-                                        <img src={user.photoURL} />
+                                        <img src={user?.photoURL || ""} />
                                         <p>{comments.displayName}</p>
                                     </div>
                                     <div className="comment-date">
                                         <p>date here</p>
                                     </div>
                                     <div>
-                                        <p>{comment.content}</p>
+                                        <p>{comments.content}</p>
                                     </div>
                                 </li>
                             ))}

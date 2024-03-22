@@ -1,16 +1,16 @@
-import styles from './Searchbar.module.css';
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import styles from './searchbar.module.css';
+import { useState, FormEvent} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Col, Row } from 'antd';
 
 export default function Searchbar() {
 
     const [term, setTerm] = useState('');
-    const history = useHistory();
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        history.push(`/search?q=${term}`);
+        navigate(`/search?q=${term}`);
     }
 
     return (
@@ -22,7 +22,7 @@ export default function Searchbar() {
                         <input
                             type="text"
                             id="search"
-                            onChange={(e) => setTerm(e.target.valeu)}
+                            onChange={(e) => setTerm(e.target.value)}
                             required
                         />
                     </form>

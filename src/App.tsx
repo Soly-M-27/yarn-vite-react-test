@@ -1,6 +1,5 @@
 // App.jsx
 
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Dashboard from './pages/dashboard/Dashboard';
 //import AR_Cards from './pages/AR_Cards/AR_Cards';
@@ -53,12 +52,8 @@ function App() {
               <Navbar />
               {user && (
                 <Sidebar
-                  style={{
-                    backgroundColor: "#f0f0f0",
-                    border: "3px solid #ccc",
-                    borderRadius: "5px",
-                    boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
-                  }}
+                  
+                 
                 />
               )}
               <Routes>

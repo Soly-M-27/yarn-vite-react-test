@@ -8,18 +8,18 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [displayName, setDisplayName] = useState('');
-    const [thumbnail, setThumbnail] = useState(null);
-    const [thumbnailError, setThumbnailError] = useState(null);
+    const [thumbnail, setThumbnail] = useState<File | null>(null);
+    const [thumbnailError, setThumbnailError] = useState<string | null>(null);
     const { error, signup } = useSignup();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:any) => {
         e.preventDefault();
         console.log(email, password, displayName);
-        signup(email, password, displayName, thumbnail);
+        signup(email, password, displayName, thumbnail as File);
         console.log("Signed up??");
     }
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e:any) => {
         setThumbnail(null);
         let selected = e.target.files[0];
         console.log(selected);
@@ -30,7 +30,7 @@ export default function Signup() {
         if (!selected.type.includes('image')) {
             setThumbnailError('Selected file must be an image');
         }
-        if (!selected.size > 100000) {
+        if (!(selected.size > 100000)) {
             setThumbnailError('Image file size must be less than 100kb');
         }
         setThumbnailError(null);
@@ -48,7 +48,7 @@ export default function Signup() {
                         <span>email:</span>
                         <input
                             type="email"
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e:any) => setEmail(e.target.value)}
                             value={email}
                         />
                     </label>
@@ -56,7 +56,7 @@ export default function Signup() {
                         <span>password:</span>
                         <input
                             type="password"
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e:any) => setPassword(e.target.value)}
                             value={password}
                         />
                     </label>
@@ -64,7 +64,7 @@ export default function Signup() {
                         <span>display name:</span>
                         <input
                             type="text"
-                            onChange={(e) => setDisplayName(e.target.value)}
+                            onChange={(e:any) => setDisplayName(e.target.value)}
                             value={displayName}
                         />
                     </label>

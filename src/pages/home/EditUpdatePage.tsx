@@ -3,7 +3,7 @@
 import { useAuthContext } from '../../hooks/useAuthContext';
 //import { useFirestore } from '../../hooks/useFirestore';`;
 import { useState } from 'react';
-import { Row, Col, Button, Input, Upload, Form } from 'antd';
+import { Row, Col,  Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useProfileInfo } from '../../hooks/useProfileInfo';
 import { useNavigate } from 'react-router-dom';
@@ -23,13 +23,13 @@ export default function EditUpdatePage() {
   
   //component states & function holders
   const { authIsReady, user } = useAuthContext();
-  const { MindFile, UpdateProfileInfo } = useProfileInfo();
+  const { MindFile } = useProfileInfo();
   const navigate = useNavigate();
-  const { documents, errorC } = useCollection(
+  const { documents, error } = useCollection(
     "profile_info",
-    user ? ["uid", "==", user.uid] : [], // An array being passed as a function parameter. We're saying only fetch the books where the uid property of the book is equal to the uid of the user
+     ["uid", "==", user?.uid] , // An array being passed as a function parameter. We're saying only fetch the books where the uid property of the book is equal to the uid of the user
     ["createdAt", "desc"],
-    user.uid //Pass the user's UID directly
+    user?.uid //Pass the user's UID directly
   );
 
   //tests
@@ -66,7 +66,7 @@ export default function EditUpdatePage() {
    * @param {*} e - event obj of type ANY
    * @returns : Updates jsx form submition elemnts
    */
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     console.log("Handling Update Info of users profile_info documents");
     //setformError(null);
@@ -145,7 +145,7 @@ export default function EditUpdatePage() {
    * @param {*} e - event obj of type ANY (it should be an image file)
    * @returns : mindImage to Firebase Storage via MindFile
    */
-  const handleFileChange = (e) => {
+  const handleFileChange = (e:any) => {
     console.log("Event object:", e);
     console.log("File selected:", e.target.files);
     console.log("File[0] selected:", e.target.files[0]);
@@ -163,7 +163,7 @@ export default function EditUpdatePage() {
       //setformError("Selected file must be an image");
       return;
     }
-    if (!selected.size > 100000) {
+    if (!(selected.size > 100000)) {
       setMind_File(null);
       //setformError("Image file size must be less than 100kb");
       return;
@@ -181,7 +181,7 @@ export default function EditUpdatePage() {
   //Check documents
   if (!documents || documents.length === 0) {
     console.log("Documents NOT passed to BusinessCard: ", documents);
-    console.log("errorC: ", errorC);
+    console.log("error: ", error);
   } else {
     console.log("Documents passed to BusinessCard: ", documents);
   }
@@ -214,7 +214,7 @@ export default function EditUpdatePage() {
                   alt="Pic"
                 />
                 <h2>{user.displayName}'s Card Profile</h2>
-                {errorC && <p className='error'>{errorC}</p>}
+                {error && <p className='error'>{error}</p>}
               </div>
               <div>
                 {documents.length === 0 && (

@@ -1,10 +1,8 @@
 import { useFirestore } from '../../hooks/useFirestore';
 import { Row, Col } from 'antd';
 import { useAuthContext } from '../../hooks/useAuthContext';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { Avatar, Card, Skeleton } from 'antd';
-import Sidebar from '../../components/Sidebar'
-//import EditUpdatePage from '../home/EditUpdatePage'
 import { useNavigate } from 'react-router-dom';
 
 //styles
@@ -19,7 +17,7 @@ const { Meta } = Card;
  * @param {*} param0 - parameter that takes documents from Dashboard where useCollection fetches said documents
  * @returns : jsx elements for Business Card square
  */
-export default function BusinessCardSlot ({ BusinessCard }) {
+export default function BusinessCardSlot ({ BusinessCard }: any) {
  
   //component states & function holders
   const navigate = useNavigate();
@@ -27,9 +25,10 @@ export default function BusinessCardSlot ({ BusinessCard }) {
   console.log("response from AR_BusinessCardSlots.js: ", response);
  
   const { user, authIsReady } = useAuthContext();
-  const { loading } = Sidebar();
+  //const { loading } = Sidebar();
+  const  loading = false;
  
-  const userID = user.uid;
+  const userID = user?.uid;
 
   console.log("typeof userID in ARBusinessCardSlots.jsx: ", typeof userID);
   console.log("userID in ARBusinessCardSlots.jsx: ", userID);
@@ -42,7 +41,7 @@ export default function BusinessCardSlot ({ BusinessCard }) {
    * @param {*} id - id of the card being edited. Try to use this id to compare in 
    * EditUpdatePage.jsx whether the documents id matches the id to be edited/updated
    */
-  const handleEditClick = (id) => { //Unapplied useDocument.jsx file may help with some of these needs
+  const handleEditClick = (id: any) => { //Unapplied useDocument.jsx file may help with some of these needs
     navigate(`/edit/${id}`);
   }
 
@@ -52,7 +51,7 @@ export default function BusinessCardSlot ({ BusinessCard }) {
    * @param {*} id - id to be deleted by Firebase services
    * @returns : deleted message confirmation on console
    */
-  const handleClick = async (id) => {
+  const handleClick = async (id: any) => {
     try {
       if (!id) {
         console.log("No id Found!");
@@ -135,28 +134,28 @@ export default function BusinessCardSlot ({ BusinessCard }) {
                       title={user.displayName}
                       description="Augmented Reality Experience"
                     />
-                    <div key={card.CreatedBy.id}>
-                      <h4>{card.Name}'s AR-Card</h4>
-                      <p> {card.NameOfProfession} </p>
-                      <p> Business Name: {card.NameBusiness} </p>
-                      <p> Location: {card.Location} </p>
-                      <p> e-mail: {card.WorkEmail} </p>
+                    <div key={card.created_by.id}>
+                      <h4>{card.legal_name}'s AR-Card</h4>
+                      <p> {card.name_of_profession} </p>
+                      <p> Business Name: {card.name_business} </p>
+                      <p> Location: {card.location} </p>
+                      <p> e-mail: {card.work_email} </p>
                       <p>
                         {" "}
                         Linktree:{" "}
-                        <a href={card.Link_Tree_Link}>
+                        <a href={card.link_tree_link}>
                           {" "}
-                          {card.Link_Tree_Link}{" "}
+                          {card.link_tree_link}{" "}
                         </a>
                       </p>
-                      <p> Phone Num: {card.PhoneNum} </p>
-                      {Object.keys(card.Social_Media_Links).map((key) => (
+                      <p> Phone Num: {card.phone_num} </p>
+                      {Object.keys(card.social_media_link).map((key) => (
                         <p key={key}>
                           <li>
                             link:{" "}
-                            <a href={card.Social_Media_Links[key]}>
+                            <a href={card.social_media_link[key]}>
                               {" "}
-                              {card.Social_Media_Links[key]}{" "}
+                              {card.social_media_link[key]}{" "}
                             </a>
                           </li>
                         </p>

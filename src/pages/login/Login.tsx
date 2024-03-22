@@ -10,7 +10,7 @@ export default function Login() {
     //const { login, error, isPending } = useLogin();
     const { login, error } = useLogin();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e:any) => {
         e.preventDefault();
         login(email, password);
         console.log("Begin handleSubmit after login");

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { Button, ConfigProvider, Drawer, Space } from 'antd';
-import React, { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Col, Row } from 'antd';
 import Avatar from './Avatar';
 
@@ -18,14 +18,11 @@ const customTheme = {
     Button: {
       colorPrimary: "#00b96b",
       border: "3px solid  #e6ff40",
-      borderRadius: "50%",
-      boxShadow:
-        "0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0,rgba(0, 0, 0, .12)",
-      padding: "2px 24px",
       algorithm: true,
     },
   },
 };
+
 
 export default function Sidebar() {
   const { user } = useAuthContext();
@@ -41,13 +38,15 @@ export default function Sidebar() {
     setOpen(false);
   };
 
-  const onChange = (checked) => {
+  const onChange = (checked:FormEvent<HTMLFormElement>) => {
     setLoading(!checked);
   };
 
   return (
     <>
-      <ConfigProvider theme={customTheme}>
+      <ConfigProvider theme={{components:{
+        Button: customTheme.components.Button
+      }}}>
         {user && (
           <Row
             gutter={0}
@@ -68,7 +67,6 @@ export default function Sidebar() {
                       style={{
                         display: "flex",
                         justifyContent: "flex-start",
-                        align: "center",
                       }}
                       className={styles['button-17']}
                       type="primary"
@@ -145,7 +143,8 @@ export default function Sidebar() {
                     }}
                     type="primary"
                     onClick={onClose}
-                    checked={!loading} onChange={onChange}
+                    aria-checked={!loading}
+                    onChange={onChange}
                   >
                     X
                   </Button>

@@ -9,7 +9,7 @@ export const useSignup = () => {
     const [error, setError] = useState(null);
     const { dispatch } = useAuthContext();
 
-    const signup = async (email, password, displayName, thumbnail) => {
+    const signup = async (email:string, password:string, displayName:string, thumbnail:File) => {
       //use this instead of promises
       console.log("signup function begins in useSignup.js");
       console.log("projectAuth obj:", projectAuth);
@@ -68,12 +68,12 @@ export const useSignup = () => {
           });
           console.log("Document photo with res.user ID: ", res.user.photoURL);
           console.log("Document written with ID: ", res.user.uid);
-        } catch (e) {
+        } catch (e:any) {
           console.log("CAUGHT ERROR IN FIRESTORE ADD DOC");
           console.log("Error adding document: ", e);
-          setError("Error adding document: ", e.message);
+          setError(e.message);
         }
-      } catch (err) {
+      } catch (err:any) {
         console.log("CAUGHT ERROR IN SIGNUP");
         console.log(err);
         console.log(err.message);

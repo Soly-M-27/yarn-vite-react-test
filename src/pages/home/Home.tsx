@@ -5,8 +5,8 @@ import { useProfileInfo } from '../../hooks/useProfileInfo';
 import { useFirestore } from '../../hooks/useFirestore';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
-import { Row, Col, Button, Result, Input, Upload, Form } from 'antd';
-import { SmileOutlined, PlusOutlined } from '@ant-design/icons';
+import { Row, Col, Button, Result } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
 import SocialMediaTree from './SocialMediaTree';
 
 //styles
@@ -41,12 +41,12 @@ export default function Home() {
     const [mindFile, setMindFile] = useState(null);
 
     //form errors
-    const [formError, setformError] = useState(null);
-    const [mindFileError, setMindFileError] = useState(null);
+    const [formError, setformError] = useState<string | null>(null);
+    const [_, setMindFileError] = useState<string | null>(null);
 
     //component states & function holders
     const { response } = useFirestore('profile_info');
-    const { authIsReady, user } = useAuthContext();
+    const { authIsReady, user} = useAuthContext();
     const { profileInfo, MindFile, error } = useProfileInfo();
     const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ export default function Home() {
      * @param {*} e - event obj of type ANY
      * @returns : Takes new profile_info document
      */
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e:any) => {
         e.preventDefault();
         console.log("Handle Profile Info");
         console.log("e type: ", typeof e);
@@ -95,11 +95,11 @@ export default function Home() {
             return;
         }
 
-        // user obj that created project obj
+        // user?.obj that created project obj
         const createdBy = {
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-            id: user.uid
+            displayName: user?.displayName,
+            photoURL: user?.photoURL,
+            id: user?.uid
         }
 
         // object that contains business card form info
@@ -135,7 +135,7 @@ export default function Home() {
      * @param {*} e - event obj of type ANY
      * @returns : Image Target to then be converted to .mind file
      */
-    const handleFileChange = (e) => {
+    const handleFileChange = (e:any) => {
         setMindFile(null);
         let selected = e.target.files[0];
         console.log(selected);
@@ -164,16 +164,16 @@ export default function Home() {
         MindFile(selected);
     }
 
-    console.log("User pic: ", user.photoURL);
-    console.log("User displayName: ", user.displayName);
+    console.log("User pic: ", user?.photoURL);
+    console.log("User displayName: ", user?.displayName);
 
     //Check user authorization
     if (!authIsReady) {
         return <div>Loading...</div>;
     }
 
-    //Check for existence of user profile picture
-    if (!user.photoURL) {
+    //Check for existence of user?.profile picture
+    if (!user?.photoURL) {
         return (
             <Row gutter={0} justify="center" align="middle" className={styles['fill-form']}>
                 <Col span={24} xs={24} sm={24} md={24}>
@@ -195,7 +195,7 @@ export default function Home() {
     // Build Form JSX elemets
     return (
       <>
-        {user && authIsReady && user.photoURL && (
+        {user  && authIsReady && user?.photoURL && (
           <Row
             gutter={0}
             justify="center"
@@ -206,10 +206,10 @@ export default function Home() {
               <div className={styles.profile}>
                 <img
                   className={styles.profilePicture}
-                  src={user.photoURL}
+                  src={user?.photoURL}
                   alt="Pic"
                 />
-                <h2>{user.displayName}'s Profile</h2>
+                <h2>{user?.displayName}'s Profile</h2>
               </div>
               <form onSubmit={handleSubmit}>
                 <label>
@@ -273,7 +273,7 @@ export default function Home() {
                 <input required type="file" onChange={handleFileChange} />
                 <label>
                   <h3>
-                    Linktree is suggested in case {user.displayName} has more
+                    Linktree is suggested in case {user?.displayName} has more
                     than 4 social media links to share
                   </h3>
                   <span>Linktree (Optional):</span>
