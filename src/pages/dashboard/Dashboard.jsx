@@ -55,7 +55,7 @@ export default function Dashboard() {
     
     if (user && !user.photoURL) {
         return (
-            <Row gutter={0} justify="center" align="middle" className={styles['fill-form']}>
+            <Row gutter={0} justify="center" align="middle" >
                 <Col span={24} xs={24} sm={24} md={24}>
                     <Result
                         icon={<SmileOutlined />}
@@ -72,21 +72,25 @@ export default function Dashboard() {
     }
 
     return (
-        <>
-            {user && authIsReady && user.photoURL && documents && (
-                <Row gutter={0} justify="center" align="middle" className={styles['login-form']}>
-                    <Col span={24} xs={24} sm={24} md={24}>
-                        <div>
-                            <h2 className="page-title">Dashboard</h2>
-                            {errorC && <p className='error'>{errorC}</p>}
-                            <div className='card-spacing'>
-                                {documents && <ARBusinessCardSlots BusinessCard={documents}/>}
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
-
-            )}
-        </>
-    )
+      <>
+        {user && authIsReady && user.photoURL && documents && (
+          <Row
+            gutter={0} justify="center" align="middle"
+            className={styles["page-title"]}
+          >
+            <Col span={24} xs={24} sm={24} md={24}>
+              <div>
+                <h2>Dashboard</h2>
+                {errorC && <p className="error">{errorC}</p>}
+                <div>
+                  {documents && (
+                    <ARBusinessCardSlots BusinessCard={documents} />
+                  )}
+                </div>
+              </div>
+            </Col>
+          </Row>
+        )}
+      </>
+    );
 }

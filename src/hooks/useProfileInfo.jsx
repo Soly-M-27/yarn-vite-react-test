@@ -3,7 +3,7 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
 import { updateProfile } from 'firebase/auth';
 import { useAuthContext } from './useAuthContext';
-import { collection, addDoc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 
 /**
  * useProfileInfo - Handles submitted user info and takes 
@@ -37,13 +37,27 @@ export const useProfileInfo = () => {
           await uploadBytes(storageRef, mindFile);
 
           console.log("Downloaded MindimgUrl");
-          const imgUrl = await getDownloadURL(storageRef);
+          const MindImgUrl = await getDownloadURL(storageRef);
 
-          console.log("MindimgURL?: ", imgUrl);
+          console.log("MindimgURL?: ", MindImgUrl);
 
-          await updateProfile(user, { mindFileURL: imgUrl });
+          await updateProfile(user, { mindFileURL: MindImgUrl });
           console.log("displayName before Firebase upload: ", user.displayName);
           console.log("photoURL before Firebase upload: ", user.mindFileURL);
+
+          try {
+            console.log(
+              "trying to add mind image url to 'users'"
+            );
+            await setDoc(doc(db, "users", user.uid), {
+              mindFileURL: MindImgUrl,
+            });
+            console.log("Document photo with res.user ID: ", user.mindFileURL);
+          } catch (e) {
+            console.log("CAUGHT ERROR IN FIRESTORE ADD DOC IN UPDATEPROFILEINFO");
+            console.log("Error adding document: ", e);
+            setError("Error adding document: ", e.message);
+          }
         }
       } catch (err) {
         console.log("Error with mindFile in useProfileInfo.jsx: ", err);
@@ -109,7 +123,7 @@ export const useProfileInfo = () => {
      * 
      * @param {*} project_updated - obj containing updated states from EditUpdatePage.jsx
      */
-    const UpdateProfileInfo = async (project_updated) => {
+    const UpdateProfileInfo = async (project_updated, id) => {
       console.log("UpdateProfileInfo function updates in useProfileInfo.js");
       setError(null);
 
@@ -123,16 +137,16 @@ export const useProfileInfo = () => {
 
         try {
           console.log("trying to update new items within profile_info docID");
-          await addDoc(collection(db, "profile_info"), { //This should be updateDoc instead. Later we will deal with it
-            Name: project.legal_name,
-            WorkEmail: project.work_email,
-            Location: project.location,
-            NameOfProfession: project.name_of_profession,
-            NameBusiness: project.name_business,
-            PhoneNum: project.phone_num,
-            Social_Media_Links: project.social_media_link,
-            Link_Tree_Link: project.link_tree_link,
-            CreatedBy: project.created_by,
+          await updateDoc(doc(db, "profile_info", id), { //This should be updateDoc instead. Later we will deal with it
+            Name: project_updated.legal_name,
+            WorkEmail: project_updated.work_email,
+            Location: project_updated.location,
+            NameOfProfession: project_updated.name_of_profession,
+            NameBusiness: project_updated.name_business,
+            PhoneNum: project_updated.phone_num,
+            Social_Media_Links: project_updated.social_media_link,
+            Link_Tree_Link: project_updated.link_tree_link,
+            CreatedBy: project_updated.created_by,
             uid: user.uid,
           });
           console.log(

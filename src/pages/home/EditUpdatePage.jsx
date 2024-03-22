@@ -6,9 +6,9 @@ import { useState } from 'react';
 import { Row, Col, Button, Input, Upload, Form } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useProfileInfo } from '../../hooks/useProfileInfo';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useCollection } from '../../hooks/useCollection';
-//import SocialMediaTree from './SocialMediaTree';
+import SocialMediaTree from './SocialMediaTree';
 
 //styles
 import styles from './Home.module.css';
@@ -25,6 +25,12 @@ export default function EditUpdatePage() {
   const { authIsReady, user } = useAuthContext();
   const { MindFile, UpdateProfileInfo } = useProfileInfo();
   const navigate = useNavigate();
+  const { id } = useParams();
+  if (!id) {
+    console.log("No id: ", id);
+  } else {
+    console.log("Yes id: ", id);
+  }
   const { documents, errorC } = useCollection(
     "profile_info",
     user ? ["uid", "==", user.uid] : [], // An array being passed as a function parameter. We're saying only fetch the books where the uid property of the book is equal to the uid of the user
@@ -40,7 +46,7 @@ export default function EditUpdatePage() {
   //Will uncomment after figuring out how new state values with be updated in:
   //https://firebase.google.com/docs/firestore/manage-data/add-data#web-modular-api_8
 
-  /*const [NameUpdate, setName] = useState("");
+  const [NameUpdate, setName] = useState("");
   const [LinktreeUpdate, setLinktree] = useState("");
   const [EmailUpdate, setWorkEmail] = useState("");
   const [LocationUpdate, setLocation] = useState("");
@@ -50,15 +56,10 @@ export default function EditUpdatePage() {
   const [linkChangeUpdate, setLinkChange] = useState({});
   
   //bool
-  const [refreshed, setRefreshed] = useState(false);
-  
-  //picture files
-  const [mindFileUpdate, setMind_File] = useState(null);
+  //const [refreshed, setRefreshed] = useState(false);
   
   //form errors
-  const [formError, setformError] = useState(null);
-
-  */
+   const [formError, setformError] = useState(null);
 
   /**
    * handleSubmit - Function to trigger form submition on update
@@ -69,9 +70,9 @@ export default function EditUpdatePage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Handling Update Info of users profile_info documents");
-    //setformError(null);
+    setformError(null);
 
-    /*if (!NameUpdate) {
+    if (!NameUpdate) {
       setformError("Please enter your first & last name.");
       return;
     }
@@ -129,7 +130,7 @@ export default function EditUpdatePage() {
     );
     console.log("project object: ", project_updated);
 
-    UpdateProfileInfo(project_updated);*/
+    UpdateProfileInfo(project_updated, id);
 
     console.log("New Info!");
 
@@ -203,7 +204,7 @@ export default function EditUpdatePage() {
           gutter={0}
           justify="center"
           align="middle"
-          className={styles["fill-form"]}
+          className={styles["flex-container-center"]}
         >
           <Col span={24} xs={24} sm={24} md={24}>
             <form onSubmit={handleSubmit}>
@@ -214,39 +215,140 @@ export default function EditUpdatePage() {
                   alt="Pic"
                 />
                 <h2>{user.displayName}'s Card Profile</h2>
-                {errorC && <p className='error'>{errorC}</p>}
+                {errorC && <p className="error">{errorC}</p>}
               </div>
               <div>
                 {documents.length === 0 && (
                   <p>No Business Card created yet in EditUpdatePage!</p>
                 )}
-                {documents && Array.isArray(documents) && documents.map((card) => (
-                  <div key={card.CreatedBy.id}>
-                    <h4>{card.Name}'s AR-Card</h4>
-                    <p> {card.NameOfProfession} </p>
-                    <p> Business Name: {card.NameBusiness} </p>
-                    <p> Location: {card.Location} </p>
-                    <p> e-mail: {card.WorkEmail} </p>
-                    <p>
-                      {" "}
-                      Linktree:{" "}
-                      <a href={card.Link_Tree_Link}> {card.Link_Tree_Link} </a>
-                    </p>
-                    <p> Phone Num: {card.PhoneNum} </p>
-                    {Object.keys(card.Social_Media_Links).map((key) => (
-                      <p key={key}>
-                        <li>
-                          link:{" "}
-                          <a href={card.Social_Media_Links[key]}>
+                {documents &&
+                  Array.isArray(documents) &&
+                  documents.map((card) => (
+                    <div key={card.CreatedBy.id}>
+                      {id === card.id && (
+                        <>
+                            <label>
+                              <span>Name (First & Last):</span>
+                              <input
+                                required
+                                type="text"
+                                onChange={(e) => setName(e.target.value)}
+                                value={NameUpdate}
+                                default={card.Name}
+                              />
+                            </label>
+                            <label>
+                              <span>
+                                Work email (Optional: e-mail related to Business
+                                Card Info):
+                              </span>
+                              <input
+                                type="text"
+                                onChange={(e) => setWorkEmail(e.target.value)}
+                                value={EmailUpdate}
+                                default={card.WorkEmail}
+                              />
+                            </label>
+                            <label>
+                              <span>Name of business:</span>
+                              <input
+                                required
+                                type="text"
+                                onChange={(e) =>
+                                  setNameBusiness(e.target.value)
+                                }
+                                value={BusinessNameUpdate}
+                                default={card.NameBusiness}
+                              />
+                            </label>
+                            <label>
+                              <span>Location of business:</span>
+                              <input
+                                required
+                                type="text"
+                                onChange={(e) => setLocation(e.target.value)}
+                                value={LocationUpdate}
+                                default={card.Location}
+                              />
+                            </label>
+                            <label>
+                              <span>Name of profession:</span>
+                              <input
+                                required
+                                type="text"
+                                onChange={(e) =>
+                                  setNameProfession(e.target.value)
+                                }
+                                value={ProfessionNameUpdate}
+                                default={card.NameOfProfession}
+                              />
+                            </label>
+                            <label>
+                              <span>Phone or cell work number (Optional):</span>
+                              <input
+                                type="text"
+                                onChange={(e) => setPhoneNum(e.target.value)}
+                                value={PhoneNumUpdate}
+                                default={card.PhoneNum}
+                              />
+                            </label>
+                            <label>
+                              <SocialMediaTree
+                                onLinkInputsChange={setLinkChange}
+                                default={linkChangeUpdate}
+                              />
+                            </label>
+                            <span>AR-BusinessCard picture:</span>
+                            <input
+                              required
+                              type="file"
+                              onChange={handleFileChange}
+                              default={mindFileUpdate}
+                            />
+                            <label>
+                              <h3>
+                                Linktree is suggested in case {user.displayName}{" "}
+                                has more than 4 social media links to share
+                              </h3>
+                              <span>Linktree (Optional):</span>
+                              <input
+                                type="text"
+                                onChange={(e) => setLinktree(e.target.value)}
+                                value={LinktreeUpdate}
+                                default={card.Link_Tree_Link}
+                              />
+                            </label>
+
+                          {/*<h4>{card.Name}'s AR-Card</h4>
+                          <p> {card.NameOfProfession} </p>
+                          <p> Business Name: {card.NameBusiness} </p>
+                          <p> Location: {card.Location} </p>
+                          <p> e-mail: {card.WorkEmail} </p>
+                          <p>
                             {" "}
-                            {card.Social_Media_Links[key]}{" "}
-                          </a>
-                        </li>
-                      </p>
-                    ))}
-                    <p> Card.id: {card.id} </p>
-                  </div>
-                ))}
+                            Linktree:{" "}
+                            <a href={card.Link_Tree_Link}>
+                              {" "}
+                              {card.Link_Tree_Link}{" "}
+                            </a>
+                          </p>
+                          <p> Phone Num: {card.PhoneNum} </p>
+                          {Object.keys(card.Social_Media_Links).map((key) => (
+                            <p key={key}>
+                              <li>
+                                link:{" "}
+                                <a href={card.Social_Media_Links[key]}>
+                                  {" "}
+                                  {card.Social_Media_Links[key]}{" "}
+                                </a>
+                              </li>
+                            </p>
+                          ))}
+                          <p> Card.id: {card.id} </p>*/}
+                        </>
+                      )}
+                    </div>
+                  ))}
               </div>
               <label>
                 <Upload listType="picture-card" action="/upload.do">
@@ -291,15 +393,15 @@ export default function EditUpdatePage() {
                     </label>
                   </div>
                 </Upload>
-                {/*formError && (
+                {formError && (
                   <div className="error"> formError: {formError}</div>
-                )*/}
+                )}
               </label>
-              <div>
+              <div className={styles["flex-container"]}>
                 <button className="btn">Finish Edit</button>
-                {/*formError && (
+                {formError && (
                   <div className="error"> formError: {formError}</div>
-                )*/}
+                )}
               </div>
             </form>
           </Col>

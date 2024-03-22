@@ -1,3 +1,23 @@
+
+.flex-container-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.flex-item {
+    padding: 5px;
+    margin-top: 10px;
+    line-height: 18px;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 10px;
+}
+
 .profile {
   text-align: center;
 }

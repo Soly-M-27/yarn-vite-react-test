@@ -1,4 +1,36 @@
 /* CSS */
+
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    padding: 20px;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.flex-item {
+    padding: 5px;
+    margin-top: 10px;
+    line-height: 18px;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 10px;
+}
+
+.flex-x-delete-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.avatar-size {
+    width: 50px;
+    height: 50px;
+}
+
 .button-56 {
     align-items: center;
     background-color: #fee6e3;
