@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
-import { doc, DocumentSnapshot, DocumentData, Firestore, onSnapshot } from "firebase/firestore";
+import { doc, DocumentSnapshot, DocumentData,  onSnapshot } from "firebase/firestore";
 
 type UseDocumentReturnType = {
   document: DocumentData | null;

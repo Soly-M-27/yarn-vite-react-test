@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import { SmileOutlined } from '@ant-design/icons';
 import { Button, Result } from 'antd';
@@ -6,12 +6,14 @@ import { useCollection } from '../../hooks/useCollection';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import ARBusinessCardSlots from '../home/ARBusinessCardSlots';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { Row, Col } from 'antd';
 //import { useExistingDocuments } from './useExistingDocuments';
 //import AR_Cards from '../AR_Cards/AR_Cards';
 
 //styles
 import styles from './Dashboard.module.css';
+import { where } from 'firebase/firestore';
 
 /**
  * Dashboard - Displays created Business Cards from the build (Home.jsx)
@@ -22,11 +24,10 @@ export default function Dashboard() {
 
     const [refreshed, setRefreshed] = useState(false);
     const { user, authIsReady } = useAuthContext();
-    const { documents, errorC } = useCollection(
+    const { documents, error } = useCollection(
       "profile_info",
-      user ? ["uid", "==", user.uid] : [], // An array being passed as a function parameter. We're saying only fetch the docs where the uid property of the doc is equal to the uid of the user
-      ["createdAt", "desc"],
-      user.uid //Pass the user's UID directly
+      [where("uid", "==", user?.uid)],
+      user?.uid as string 
     );
     
     if (!documents) {
@@ -38,7 +39,9 @@ export default function Dashboard() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!authIsReady) return <div>Loading...</div>;
+        if (!authIsReady) {
+
+        };
         if (!user) {
             navigate('/login');
         }
@@ -78,7 +81,7 @@ export default function Dashboard() {
                     <Col span={24} xs={24} sm={24} md={24}>
                         <div>
                             <h2 className="page-title">Dashboard</h2>
-                            {errorC && <p className='error'>{errorC}</p>}
+                            {error && <p className='error'>{error}</p>}
                             <div className='card-spacing'>
                                 {documents && <ARBusinessCardSlots BusinessCard={documents}/>}
                             </div>

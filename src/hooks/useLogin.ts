@@ -10,7 +10,7 @@ export const useLogin = () => { // if we use this hook in a component,
     const [ error, setError ] = useState(null);
     const { dispatch } = useAuthContext();
 
-    const login = async (email, password) => { // If we call this function, 
+    const login = async (email:string, password:string) => { // If we call this function, 
                                  // it's going to try and login the user, 
                                  // update the state, etcetera, while also
                                  // firing the cleanup function right away. 

@@ -3,9 +3,6 @@ import { db } from '../firebase/config';
 import {
   collection,
   onSnapshot,
-  query,
-  where,
-  orderBy,
   QueryConstraint,
   QuerySnapshot,
   DocumentData,
@@ -25,8 +22,8 @@ type UseCollectionReturnType = {
 export const useCollection = (
   collectionName: string,
   constraints: QueryConstraint[] | null,
-  orderByOptions: OrderByType | null,
-  userId: number
+  userId: string,
+  orderByOptions?: OrderByType | null,
 ): UseCollectionReturnType => {
   const [documents, setDocuments] = useState<DocumentData[]>([]);
   const [error, setError] = useState<string | null>(null);

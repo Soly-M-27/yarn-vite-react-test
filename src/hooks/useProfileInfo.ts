@@ -4,25 +4,9 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { updateProfile } from 'firebase/auth';
 import { useAuthContext } from './useAuthContext';
 import { collection, addDoc, updateDoc } from "firebase/firestore";
-import { User } from 'firebase/auth';
-import { DocumentData } from 'firebase/firestore';
+import { UserProfile, ProfileInfo } from '../types/docsRef';
 
-interface ProfileInfo extends DocumentData {
-  legal_name: string;
-  work_email: string;
-  location: string;
-  name_of_profession: string;
-  name_business: string;
-  phone_num: string;
-  social_media_link: string;
-  link_tree_link: string;
-  created_by: string;
-  mindFileURL: string;
-}
 
-interface UserProfile extends User {
-  mindFileURL?: string;
-}
 
 interface ProfileInfoFunctions {
   error: string | null;
