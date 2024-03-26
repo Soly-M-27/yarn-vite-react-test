@@ -295,7 +295,6 @@ export default function EditUpdatePage() {
                             <label>
                               <SocialMediaTree
                                 onLinkInputsChange={setLinkChange}
-                                default={linkChangeUpdate}
                               />
                             </label>
                             <span>AR-BusinessCard picture:</span>
@@ -318,40 +317,13 @@ export default function EditUpdatePage() {
                                 default={card.Link_Tree_Link}
                               />
                             </label>
-
-                          {/*<h4>{card.Name}'s AR-Card</h4>
-                          <p> {card.NameOfProfession} </p>
-                          <p> Business Name: {card.NameBusiness} </p>
-                          <p> Location: {card.Location} </p>
-                          <p> e-mail: {card.WorkEmail} </p>
-                          <p>
-                            {" "}
-                            Linktree:{" "}
-                            <a href={card.Link_Tree_Link}>
-                              {" "}
-                              {card.Link_Tree_Link}{" "}
-                            </a>
-                          </p>
-                          <p> Phone Num: {card.PhoneNum} </p>
-                          {Object.keys(card.Social_Media_Links).map((key) => (
-                            <p key={key}>
-                              <li>
-                                link:{" "}
-                                <a href={card.Social_Media_Links[key]}>
-                                  {" "}
-                                  {card.Social_Media_Links[key]}{" "}
-                                </a>
-                              </li>
-                            </p>
-                          ))}
-                          <p> Card.id: {card.id} </p>*/}
                         </>
                       )}
                     </div>
                   ))}
               </div>
               <label>
-                <Upload listType="picture-card" action="/upload.do">
+                {/*<Upload listType="picture-card" action="/upload.do">
                   <div
                     style={{
                       padding: "8px",
@@ -392,7 +364,7 @@ export default function EditUpdatePage() {
                       <div style={{ marginTop: "2px" }}>Upload</div>
                     </label>
                   </div>
-                </Upload>
+                      </Upload>*/}
                 {formError && (
                   <div className="error"> formError: {formError}</div>
                 )}
